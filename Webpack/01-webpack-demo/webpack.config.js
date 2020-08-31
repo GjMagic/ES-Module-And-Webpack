@@ -11,6 +11,21 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     // publicPath: 'dist/'
   },
+  devServer: {
+    contentBase: 'public',
+    proxy: {
+      '/api': {
+        // http://localhost:8080/api/users => https://api.github.com/api/users
+        target: 'https://api.github.com',
+        // http://localhost:8080/api/users => https://api.github.com/users
+        pathRewrite: {
+          '^/api': ''
+        },
+        // 不能使用localhost:8080 作为请求Github的主机名
+        changeOrigin: true,
+      }
+    }
+  },
   module: {
     rules: [{
       test: /\.js$/,
@@ -47,11 +62,12 @@ module.exports = {
       title: 'Html-Webpack-plugin',
       template: './src/index.html'
     }),
-    new CopyWebpackPlugin({
+    // 开发阶段最好不要使用这个插件
+    /* new CopyWebpackPlugin({
       patterns: [{
         from: 'public',
         to: 'public'
       }]
-    })
+    }) */
   ]
 }
