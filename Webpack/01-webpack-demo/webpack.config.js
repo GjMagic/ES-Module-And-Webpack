@@ -1,4 +1,5 @@
 const path = require('path')
+const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
@@ -24,7 +25,9 @@ module.exports = {
         // 不能使用localhost:8080 作为请求Github的主机名
         changeOrigin: true,
       }
-    }
+    },
+    // hot: true,
+    // hotOnly: true,
   },
   devtool: 'cheap-module-eval-source-map',
   module: {
@@ -63,6 +66,7 @@ module.exports = {
       title: 'Html-Webpack-plugin',
       template: './src/index.html'
     }),
+    // new webpack.HotModuleReplacementPlugin(),
     // 开发阶段最好不要使用这个插件
     /* new CopyWebpackPlugin({
       patterns: [{
