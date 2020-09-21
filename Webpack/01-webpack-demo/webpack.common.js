@@ -12,6 +12,12 @@ module.exports = {
     path: path.join(__dirname, 'dist'),
     // publicPath: 'dist/'
   },
+  optimization: {
+    // usedExports: true, // 只输出使用的模块（标记）
+    // concatenateModules: true, // 把所有模块尽量合并到一个函数里
+    // minimize: true,    // 压缩使用的模块（清除）
+    sideEffects: true,
+  },
   devServer: {
     contentBase: 'public',
     proxy: {
@@ -29,7 +35,7 @@ module.exports = {
     // hot: true,
     // hotOnly: true,
   },
-  devtool: 'cheap-module-eval-source-map',
+  // devtool: 'cheap-module-eval-source-map',
   module: {
     rules: [{
       test: /\.js$/,
@@ -74,5 +80,8 @@ module.exports = {
         to: 'public'
       }]
     }) */
+    new webpack.DefinePlugin({
+      API_BASE_URL: JSON.stringify('https://api.example.com'),
+    })
   ]
 }

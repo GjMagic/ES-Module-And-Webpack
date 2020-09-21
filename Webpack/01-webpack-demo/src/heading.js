@@ -9,7 +9,9 @@ export default () => {
     alert('Hello Webpack')
   })
 
-  alert('12311')
+  alert(API_BASE_URL)
 
   return oH2
 }
+
+const Link = () => document.createElement('a');
