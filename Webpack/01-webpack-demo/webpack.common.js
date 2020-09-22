@@ -3,12 +3,15 @@ const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'none',
   entry: './src/index.js',
   output: {
-    filename: 'bundle.js',
+    filename: '[name]-[contenthash:8].bundle.js', // 控制缓存使用8位contenthash即可
     path: path.join(__dirname, 'dist'),
     // publicPath: 'dist/'
   },
@@ -48,7 +51,8 @@ module.exports = {
     }, {
       test: /\.css$/,
       use: [
-        'style-loader',
+        // 'style-loader', // 将样式放到style标签里插入页面
+        MiniCssExtractPlugin.loader,
         'css-loader',
       ]
     }, {
@@ -66,6 +70,12 @@ module.exports = {
       }
     }]
   },
+  optimization: {
+    minimizer: [
+      new OptimizeCssAssetsWebpackPlugin(),
+      new TerserWebpackPlugin(),
+    ]
+  },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
@@ -82,6 +92,9 @@ module.exports = {
     }) */
     new webpack.DefinePlugin({
       API_BASE_URL: JSON.stringify('https://api.example.com'),
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name]-[contenthash:8].bundle.css', // 控制缓存使用8位contenthash即可
+    }),
   ]
 }
